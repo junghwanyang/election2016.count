@@ -1,4 +1,4 @@
-insert overwrite local directory 'keyword.count/cruzMention.count.6'
+insert overwrite local directory 'keyword.count/clintonMention.count.6'
 row format delimited
 fields terminated by '\t'
 select year, month, day, count(*)
