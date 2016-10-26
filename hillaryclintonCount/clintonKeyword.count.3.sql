@@ -10,7 +10,7 @@ where
     and
     month<=9
     and
-    lower(text) like '%trump%'
+    lower(text) like regexp '\\strump\\W'
     and
     lower(text) not like '%@realdonaldtrump%'
     and

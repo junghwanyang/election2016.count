@@ -18,35 +18,26 @@ where
         lower(text) like '%@sensanders%'
     )
     and
-    lower(text) not like '%RT @berniesanders%'
+    lower(text) rlike '^\(\(?!^.*\\brt\\s*@berniesanders\\b.*$\).\)*$'
     and
-    lower(text) not like '%RT @sensanders%'
+    lower(text) rlike '^\(\(?!^.*\\brt\\s*@sensanders\\b.*$\).\)*$'
     and
     lower(user.screen_name) not like '%berniesanders%'
     and
     lower(user.screen_name) not like '%sensanders%'
-    and
-    (
-        (retweeted_status.user.screen_name is not NULL
-        and
-        lower(retweeted_status.user.screen_name) not like '%berniesanders%'
-        )
-    or
-        (retweeted_status.user.screen_name is not NULL
-        and
-        lower(retweeted_status.user.screen_name) not like '%sensanders%'
-        )
-    or
-        retweeted_status.user.screen_name is NULL
-    )
 group by year, month, day;
 
--- This script counts tweets with '@BernieSanders' or '@SenSanders' except Bernie Sanders's own tweet and retweets of Bernie Sanders's tweet (RT @BernieSanders, RT @SenSanders)
+-- This script counts tweets with '@berniesanders' or '@sensanders' except bernie sanders's own tweet and retweets of bernie sanders's tweet (RT @berniesanders, RT @sensanders)
 
--- @BernieSanders
--- @SenSanders
+-- @berniesanders
+-- @sensanders
 
 -- http://www.vogella.com/tutorials/JavaRegularExpressions/article.html
 -- http://www.regexplanet.com/advanced/java/index.html
 -- http://hadooptutorial.info/hive-functions-examples/#LIKE_RLIKE
 -- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF
+
+-- This is a java regex to exclude rt @berniesanders ^((?!^.*\brt @berniesanders\b.*$).)*$
+-- Hive needs \ before () and \
+-- So, this is a hive regex to exclude rt @berniesanders ^\(\(?!^.*\\brt @berniesanders\\b.*$\).\)*$
+-- I made it into ^\(\(?!^.*\\brt\\s*@berniesanders\\b.*$\).\)*$ by changing space between rt and @ into \\s

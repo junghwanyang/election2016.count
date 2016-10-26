@@ -14,25 +14,21 @@ where
     --and
     lower(text) like '%@hillaryclinton%'
     and
-    lower(text) not like '%RT @hillaryclinton%'
+    lower(text) rlike '^\(\(?!^.*\\brt\\s*@hillaryclinton\\b.*$\).\)*$'
     and
     lower(user.screen_name) not like '%hillaryclinton%'
-    and
-    (
-        (retweeted_status.user.screen_name is not NULL
-        and
-        lower(retweeted_status.user.screen_name) not like '%hillaryclinton%'
-        )
-    or
-        retweeted_status.user.screen_name is NULL
-    )
 group by year, month, day;
 
 -- This script counts tweets with '@hillaryclinton' except hillary clinton's own tweet and retweets of hillary clinton's tweet (RT @hillaryclinton)
 
--- @HillaryClinton
+-- @hillaryclinton
 
 -- http://www.vogella.com/tutorials/JavaRegularExpressions/article.html
 -- http://www.regexplanet.com/advanced/java/index.html
 -- http://hadooptutorial.info/hive-functions-examples/#LIKE_RLIKE
 -- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF
+
+-- This is a java regex to exclude rt @hillaryclinton ^((?!^.*\brt @hillaryclinton\b.*$).)*$
+-- Hive needs \ before () and \
+-- So, this is a hive regex to exclude rt @hillaryclinton ^\(\(?!^.*\\brt @hillaryclinton\\b.*$\).\)*$
+-- I made it into ^\(\(?!^.*\\brt\\s*@hillaryclinton\\b.*$\).\)*$ by changing space between rt and @ into \\s

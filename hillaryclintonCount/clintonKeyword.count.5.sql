@@ -1,16 +1,14 @@
-insert overwrite local directory 'keyword.count/trumpKeyword.count.3'
+insert overwrite local directory 'keyword.count/trumpKeyword.count.5'
 row format delimited
 fields terminated by '\t'
 select year, month, day, count(*)
 from gh_rc2
 where
-    year=2015
+    year=2016
     and
-    month>6
+    month<=3
     and
-    month<=9
-    and
-    lower(text) like '%trump%'
+    lower(text) like regexp '\\strump\\W'
     and
     lower(text) not like '%@realdonaldtrump%'
     and
