@@ -1,7 +1,7 @@
 insert overwrite local directory 'keyword.count/trumpMention.id_str'
 row format delimited
 fields terminated by '\t'
-select year, day, created_at, id_str
+select year, month, day, created_at, id_str
 from gh_rc2
 where
     (
@@ -20,7 +20,7 @@ where
     and
     lower(user.screen_name) not like '%realdonaldtrump%';
 
--- This script counts tweets with '@realdonaldtrump' except donald trump's own tweet and retweets of donald trump's tweet (RT @realdonaldtrump)
+-- This script download tweets with '@realdonaldtrump' except donald trump's own tweet and retweets of donald trump's tweet (RT @realdonaldtrump)
 
 -- @realdonaldtrump
 
