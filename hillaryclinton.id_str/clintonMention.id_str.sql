@@ -1,4 +1,4 @@
-insert overwrite local directory 'keyword.count/trumpMention.id_str'
+insert overwrite local directory 'elex2016/clinton.id_str.mention'
 row format delimited
 fields terminated by '\t'
 select year, month, day, created_at, id_str
