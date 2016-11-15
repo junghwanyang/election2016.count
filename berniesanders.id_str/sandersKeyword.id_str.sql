@@ -1,4 +1,4 @@
-insert overwrite local directory 'keyword.count/sandersKeyword.id_str'
+insert overwrite local directory 'keyword.count/sandersKeyword.id_str.test'
 row format delimited
 fields terminated by '\t'
 select year, month, day, created_at, id_str
@@ -12,15 +12,13 @@ where
         month<=9)
     )
     and
-    (
-        lower(text) rlike '\(^|\\s|\\#\)bernie\(\\W|$\)'
-        or
-        lower(text) rlike '\(^|\\s|\\#\)sanders\(\\W|$\)'
-    )
+    lower(text) rlike '\(^|\\s|\\#\)bernie\(\\W|$\)'
     and
     lower(text) rlike '^\(\(?!^.*\\b*@berniesanders\\b.*$\).\)*$'
     and
     lower(text) rlike '^\(\(?!^.*\\b*@sensanders\\b.*$\).\)*$'
+    and
+    lower(text) rlike '^\(\(?!^.*\\bbernie\\s*mac\\b.*$\).\)*$'
     and
     lower(user.screen_name) not like 'berniesanders'
     and
@@ -36,7 +34,10 @@ where
         )
     );
 
--- This script download tweets with 'bernie sanders' mentions except for @berniesanders or RT @berniesanders or @sensanders or RT @sensanders 
+
+-- This script finds tweets with a keyword 'bernie' except bernie sanders's own tweet and @mentions and retweets of bernie sanders's tweet (RT @berniesanders, RT @sensanders)
+-- I didn't use 'sanders' as keyword because it generates lots of noise.
+-- I also put a negation filter to exclude 'bernie mac' mentions
 
 -- @berniesanders
 -- @sensanders
