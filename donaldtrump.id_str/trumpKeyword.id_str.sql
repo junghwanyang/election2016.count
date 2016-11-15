@@ -1,7 +1,7 @@
 insert overwrite local directory 'keyword.count/trumpKeyword.id_str'
 row format delimited
 fields terminated by '\t'
-select year, day, created_at, id_str, regexp_replace(regexp_replace(text, '[ \t\r\n]+', " "), '"', "'")
+select year, month, day, created_at, id_str
 from gh_rc2
 where
     (
