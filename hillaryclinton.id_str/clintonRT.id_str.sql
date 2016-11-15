@@ -1,4 +1,4 @@
-insert overwrite local directory 'keyword.count/trumpRT.id_str'
+insert overwrite local directory 'elex2016/clinton.id_str.RT'
 row format delimited
 fields terminated by '\t'
 select year, month, day, created_at, id_str
@@ -12,21 +12,19 @@ where
         month<=9)
     )
     and
-    --lower(text) regexp '\\scruz\\W'
-    --and
     (
-        lower(text) rlike '\\brt\\s*@realdonaldtrump\\b'
+        lower(text) rlike '\\brt\\s*@hillaryclinton\\b'
         or
         (
             retweeted_status.user.screen_name is not NULL
             and
-            lower(retweeted_status.user.screen_name) like '%realdonaldtrump%'
+            lower(retweeted_status.user.screen_name) like 'hillaryclinton'
         )
     );
 
--- This script counts retweets of donald trump's tweet (RT @realdonaldtrump)
+-- This script download retweets with 'RT @hillaryclinton' except hillary clinton's own tweet and mentions of hillary clinton's tweet
 
--- @realdonaldtrump
+-- @hillaryclinton
 
 -- http://www.vogella.com/tutorials/JavaRegularExpressions/article.html
 -- http://www.regexplanet.com/advanced/java/index.html
