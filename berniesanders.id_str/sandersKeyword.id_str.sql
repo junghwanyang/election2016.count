@@ -1,4 +1,4 @@
-insert overwrite local directory 'elex/sanders.id_str.keyword'
+insert overwrite local directory 'elex2016/sanders.id_str.keyword'
 row format delimited
 fields terminated by '\t'
 select year, month, day, created_at, id_str
