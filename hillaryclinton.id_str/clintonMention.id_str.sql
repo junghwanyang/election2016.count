@@ -12,24 +12,28 @@ where
         month<=9)
     )
     and
-    --lower(text) regexp '\\scruz\\W'
-    --and
-    lower(text) like '%@realdonaldtrump%'
+    lower(text) rlike '\\b*@hillaryclinton\\b'
     and
-    lower(text) rlike '^\(\(?!^.*\\brt\\s*@realdonaldtrump\\b.*$\).\)*$'
+    lower(text) rlike '^\(\(?!^.*\\brt\\s*@hillaryclinton\\b.*$\).\)*$'
     and
-    lower(user.screen_name) not like '%realdonaldtrump%';
+    lower(user.screen_name) not like 'hillaryclinton'
+    and
+    (
+        retweeted_status.user.screen_name is not NULL
+        and
+        lower(retweeted_status.user.screen_name) not like 'hillaryclinton'
+    );
 
--- This script download tweets with '@realdonaldtrump' except donald trump's own tweet and retweets of donald trump's tweet (RT @realdonaldtrump)
+-- This script download tweets with '@hillaryclinton' except hillary clinton's own tweet and retweets of hillary clinton's tweet (RT @hillaryclinton)
 
--- @realdonaldtrump
+-- @hillaryclinton
 
 -- http://www.vogella.com/tutorials/JavaRegularExpressions/article.html
 -- http://www.regexplanet.com/advanced/java/index.html
 -- http://hadooptutorial.info/hive-functions-examples/#LIKE_RLIKE
 -- https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF
 
--- This is a java regex to exclude rt @realdonaldtrump ^((?!^.*\brt @realdonaldtrump\b.*$).)*$
+-- This is a java regex to exclude rt @hillaryclinton ^((?!^.*\brt @hillaryclinton\b.*$).)*$
 -- Hive needs \ before () and \
--- So, this is a hive regex to exclude rt @realdonaldtrump ^\(\(?!^.*\\brt @realdonaldtrump\\b.*$\).\)*$
--- I made it into ^\(\(?!^.*\\brt\\s*@realdonaldtrump\\b.*$\).\)*$ by changing space between rt and @ into \\s
+-- So, this is a hive regex to exclude rt @hillaryclinton ^\(\(?!^.*\\brt @hillaryclinton\\b.*$\).\)*$
+-- I made it into ^\(\(?!^.*\\brt\\s*@hillaryclinton\\b.*$\).\)*$ by changing space between rt and @ into \\s*
