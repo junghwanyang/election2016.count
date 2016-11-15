@@ -10,16 +10,36 @@ where
     and
     month<=9
     and
-    lower(text) like regexp '\\strump\\W'
+    (
+        (lower(text) regexp '\\shillary\\W')
+        or
+        (
+            (lower(text) like '%clinton%')
+            and
+            (lower(text) not like '%bill%')
+        )
+        or
+        (
+            (lower(text) like '%clinton%')
+            and
+            (lower(text) not like '%foundation%')
+        )
+    )
     and
-    lower(text) not like '%@realdonaldtrump%'
+    lower(text) not like '%@hillaryclinton%'
     and
-    lower(user.screen_name) not like 'realdonaldtrump'
+    lower(user.screen_name) not like 'hillaryclinton'
     and
     (
-        retweeted_status.user.screen_name is not NULL
-        and
-        lower(retweeted_status.user.screen_name) like 'realdonaldtrump'
+        (
+            retweeted_status.user.screen_name is not NULL
+            and
+            (lower(retweeted_status.user.screen_name) not like 'hillaryclinton')
+        )
+        or
+        (
+            retweeted_status.user.screen_name is NULL
+        )
     )
 group by year, month, day;
 

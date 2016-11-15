@@ -10,7 +10,6 @@ where
     and
     month<=9
     (
-        (lower(text) like '%hillary%')
         (lower(text) regexp '\\shillary\\W')
         or
         (
