@@ -1,7 +1,7 @@
 insert overwrite local directory 'keyword.count/trumpRT.id_str'
 row format delimited
 fields terminated by '\t'
-select year, month, created_at, id_str
+select year, month, day, created_at, id_str
 from gh_rc2
 where
     (
@@ -15,7 +15,7 @@ where
     --lower(text) regexp '\\scruz\\W'
     --and
     (
-        lower(text) like '%RT @realdonaldtrump%'
+        lower(text) rlike '\\brt\\s*@realdonaldtrump\\b'
         or
         (
             retweeted_status.user.screen_name is not NULL
