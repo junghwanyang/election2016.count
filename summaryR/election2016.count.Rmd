@@ -1,0 +1,40 @@
+---
+title: "elex2016"
+author: "JungHwan Yang"
+date: "11/15/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+
+```{r}
+library(dplyr)
+
+setwd('Documents/SMAD/elex2016/trump.id_str/')
+trump.mention <-
+  read.table('trump.id_str.mention.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+trump.keyword <-
+  read.table('trump.id_str.keyword.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+trump.RT <-
+  read.table('trump.id_str.RT.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+trump.count <-
+  cbind(count(trump.mention, as.Date(V4)),
+  count(trump.keyword, as.Date(V4)),
+  count(trump.RT, as.Date(V4)))
+
+```
