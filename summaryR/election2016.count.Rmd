@@ -88,8 +88,61 @@ cruz.RT <-
 ```
 
 ```{r}
-trump.count <-
-  cbind(count(trump.mention, as.Date(V4)),
-  count(trump.keyword, as.Date(V4)),
-  count(trump.RT, as.Date(V4)))
+date <-
+  data.frame(seq(as.Date('2015-01-01'), as.Date('2016-09-30'), by = 'day'))
+names(date) <- 'date'
+
+# # Change date format in 'counts' (from 2016-1-01 to 2016-01-01)
+# counts$date <- str_replace(counts$date, "2016-", "2016-0")
+# # Change names of variable in 'counts'
+# names(counts) <- c("date", "rt.by.trump", "trump.tweet")
+
+
+tweet.count <-
+  data.frame((count(trump.mention, as.Date(V4)))[,1:2],
+        trump.keyword=count(trump.keyword, as.Date(V4))[,2],
+        trump.RT=count(trump.RT, as.Date(V4))[,2],
+        clinton.mention=count(clinton.mention, as.Date(V4))[,2],
+        clinton.keyword=count(clinton.keyword, as.Date(V4))[,2],
+        clinton.RT=count(clinton.RT, as.Date(V4))[,2],
+        sanders.mention=count(sanders.mention, as.Date(V4))[,2],
+        sanders.keyword=count(sanders.keyword, as.Date(V4))[,2],
+        sanders.RT=count(sanders.RT, as.Date(V4))[,2],
+        cruz.mention=count(cruz.mention, as.Date(V4))[,2],
+        cruz.keyword=count(cruz.keyword, as.Date(V4))[,2],
+        cruz.RT=count(cruz.RT, as.Date(V4))[,2])
+
+
+trump.og.count <-
+  data.frame(table(as.Date(og.trump.tweet$V14)))
+names(trump.og.count) <- c("date", "trump tweet")
+trump.og.count$date <- as.Date(trump.og.count$date)
+retweet.count <-
+  data.frame(table(as.Date(retweet$V2)))
+names(retweet.count) <- c("date", "retweet")
+retweet.count$date <- as.Date(retweet.count$date)
+mention.count <-
+  data.frame(table(as.Date(mention$V2)))
+names(mention.count) <- c("date", "mention")
+mention.count$date <- as.Date(mention.count$date)
+keyword.count <-
+  data.frame(table(as.Date(keyword$V2)))
+names(keyword.count) <- c("date", "keyword")
+keyword.count$date <- as.Date(keyword.count$date)
+
+# Merge dataframes
+count.all <- 
+  date %>%
+  merge(trump.og.count, by = "date", all = T) %>%
+  merge(mention.count, by = "date", all = T) %>%
+  merge(retweet.count, by = "date", all = T) %>%
+  merge(keyword.count, by = "date", all = T)
+rm(retweet.count); rm(mention.count); rm(keyword.count)
+
+## Export as csv
+write.csv (count.all, "trump.long.counts.csv", row.names = F, quote = F)
+
+
+
+
 ```
