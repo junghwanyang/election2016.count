@@ -9,32 +9,87 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
+## Set working directory
 
 
 ```{r}
 library(dplyr)
 
-setwd('Documents/SMAD/elex2016/trump.id_str/')
+# setwd('Documents/SMAD/elex2016/trump.id_str/')
+setwd("/run/media/mcrc_lab/4D1F16C901E430FA/jyang/elex2016")
+```
+
+```{r trump summary}
 trump.mention <-
-  read.table('trump.id_str.mention.txt', header=F, sep="\t",
+  read.table('trump.id_str/trump.id_str.mention.txt', header=F, sep="\t",
              colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
   .[!duplicated(.[,5]),]
 
 trump.keyword <-
-  read.table('trump.id_str.keyword.txt', header=F, sep="\t",
+  read.table('trump.id_str/trump.id_str.keyword.txt', header=F, sep="\t",
              colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
   .[!duplicated(.[,5]),]
 
 trump.RT <-
-  read.table('trump.id_str.RT.txt', header=F, sep="\t",
+  read.table('trump.id_str/trump.id_str.RT.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+```
+
+```{r clinton summary}
+clinton.mention <-
+  read.table('clinton.id_str/clinton.id_str.mention.txt', header=F, sep="\t",
              colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
   .[!duplicated(.[,5]),]
 
+clinton.keyword <-
+  read.table('clinton.id_str/clinton.id_str.keyword.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+clinton.RT <-
+  read.table('clinton.id_str/clinton.id_str.RT.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+```
+
+```{r sanders summary}
+sanders.mention <-
+  read.table('sanders.id_str/sanders.id_str.mention.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+sanders.keyword <-
+  read.table('sanders.id_str/sanders.id_str.keyword.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+sanders.RT <-
+  read.table('sanders.id_str/sanders.id_str.RT.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+```
+
+```{r cruz summary}
+cruz.mention <-
+  read.table('cruz.id_str/cruz.id_str.mention.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+cruz.keyword <-
+  read.table('cruz.id_str/cruz.id_str.keyword.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+
+cruz.RT <-
+  read.table('cruz.id_str/cruz.id_str.RT.txt', header=F, sep="\t",
+             colClasses=c(rep("numeric",3), "POSIXct", "character")) %>%
+  .[!duplicated(.[,5]),]
+```
+
+```{r}
 trump.count <-
   cbind(count(trump.mention, as.Date(V4)),
   count(trump.keyword, as.Date(V4)),
   count(trump.RT, as.Date(V4)))
-
 ```
